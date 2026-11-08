@@ -1,5 +1,27 @@
 # Example FullStack Web Project
 
+## Intentional security lab (local development)
+
+With `DEBUG=True`, open `/security-lab/xss/` to practice reflected XSS.
+Enter `<img src=x onerror="alert('XSS demo')">` and submit the form.
+The result deliberately renders raw HTML, demonstrating script execution.
+The vulnerable code is in `website/security_lab.py` and
+`templates/website/security_lab_xss.html` (`autoescape off`). Remove the
+`autoescape off` block to fix it. The endpoint returns 404 when `DEBUG=False`.
+Use this exercise locally; do not deploy the lab with debug enabled.
+
+Additional intentional vulnerabilities (all return 404 with `DEBUG=False`):
+
+| Lab | How to try | Intended flaw / fix |
+| --- | --- | --- |
+| SQL injection | `/security-lab/sqli/?username=alice`, then `/security-lab/sqli/?username=%27%20OR%20%271%27=%271` | Input is concatenated into SQL; use parameter binding. |
+| IDOR | Change `/security-lab/invoices/1/` to `/security-lab/invoices/2/` | Demo user Alice can read Bob's invoice; enforce authenticated ownership. |
+| Open redirect | `/security-lab/redirect/?next=https://example.com/` | An external redirect target is accepted; validate destination hosts. |
+| Information disclosure | `/security-lab/config/` | Public response includes fake credentials; remove public configuration responses. |
+
+These examples use fictional records and credentials. The SQL lab creates a
+disposable in-memory SQLite database per request and does not query site data.
+
 ![image](https://user-images.githubusercontent.com/23359514/183810177-cfb570bf-2432-4625-a9d3-9a843735bc3d.png)
 
 ## Table of Contents

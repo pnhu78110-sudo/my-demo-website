@@ -1,0 +1,21 @@
+<!doctype html>
+<html lang="vi">
+<head>
+    <meta charset="utf-8">
+    <title>Security lab: Reflected XSS</title>
+</head>
+<body>
+    <h1>Security lab: Reflected XSS</h1>
+    <p>Trang thuc hanh co chu dich chua loi XSS, chi dung trong moi truong local.</p>
+    <form method="get">
+        <label for="message">Noi dung HTML</label>
+        <input id="message" name="message" value="{{ message }}">
+        <button type="submit">Hien thi</button>
+    </form>
+    <h2>Ket qua</h2>
+    <!-- INTENTIONAL VULNERABILITY: disable escaping for reflected user input. -->
+    <div id="result">{% autoescape off %}{{ message }}{% endautoescape %}</div>
+    <p>Thu nhap: <code>&lt;img src=x onerror="alert('XSS demo')"&gt;</code></p>
+    <p>Cach sua: bo khoi autoescape off de Django escape noi dung dau vao.</p>
+</body>
+</html>

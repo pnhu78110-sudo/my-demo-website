@@ -1,4 +1,7 @@
 from django.urls import path
+from .security_lab import (
+    reflected_xss, sql_injection, insecure_invoice, open_redirect, exposed_config,
+)
 from .views import (
     HomePageView,
     AboutPageView,
@@ -15,6 +18,11 @@ from .views import (
 )
 
 urlpatterns = [
+    path("security-lab/xss/", reflected_xss, name="security_lab_xss"),
+    path("security-lab/sqli/", sql_injection, name="security_lab_sqli"),
+    path("security-lab/invoices/<int:invoice_id>/", insecure_invoice, name="security_lab_idor"),
+    path("security-lab/redirect/", open_redirect, name="security_lab_redirect"),
+    path("security-lab/config/", exposed_config, name="security_lab_config"),
     path("", HomePageView.as_view(), name="home"),
     path("about/", AboutPageView.as_view(), name="about"),
     path("contact/", ContactPageView.as_view(), name="contact"),
